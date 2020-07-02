@@ -1,9 +1,9 @@
-defmodule ElixirOtpChat.MixProject do
+defmodule Server.MixProject do
   use Mix.Project
 
   def project do
     [
-      app: :elixir_otp_chat,
+      app: :server,
       version: "0.1.0",
       elixir: "~> 1.10",
       start_permanent: Mix.env() == :prod,
@@ -18,8 +18,6 @@ defmodule ElixirOtpChat.MixProject do
   end
 
   defp deps do
-    [
-      {:credo, "~> 1.4", only: [:dev, :test], runtime: false}
-    ]
+    []
   end
 end
