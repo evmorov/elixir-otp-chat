@@ -13,11 +13,14 @@ defmodule Client.MixProject do
 
   def application do
     [
+      included_applications: [:server],
       extra_applications: [:logger]
     ]
   end
 
   defp deps do
-    []
+    [
+      {:server, path: "../server"}
+    ]
   end
 end
