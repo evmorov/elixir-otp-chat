@@ -1,9 +1,9 @@
-defmodule Client.MixProject do
+defmodule ChatServer.MixProject do
   use Mix.Project
 
   def project do
     [
-      app: :client,
+      app: :chat_server,
       version: "0.1.0",
       elixir: "~> 1.10",
       start_permanent: Mix.env() == :prod,
@@ -13,14 +13,12 @@ defmodule Client.MixProject do
 
   def application do
     [
-      included_applications: [:server],
+      mod: {ChatServer.Application, []},
       extra_applications: [:logger]
     ]
   end
 
   defp deps do
-    [
-      {:server, path: "../server"}
-    ]
+    []
   end
 end

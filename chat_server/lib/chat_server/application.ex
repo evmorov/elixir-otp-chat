@@ -1,15 +1,15 @@
-defmodule Server.Application do
+defmodule ChatServer.Application do
   use Application
 
   def start(_type, _args) do
     import Supervisor.Spec
 
     children = [
-      worker(Server.Server, [])
+      worker(ChatServer.Server, [])
     ]
 
     options = [
-      name: Server.Supervisor,
+      name: ChatServer.Supervisor,
       strategy: :one_for_one
     ]
 

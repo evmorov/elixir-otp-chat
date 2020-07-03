@@ -1,4 +1,4 @@
-defmodule Server.Server do
+defmodule ChatServer.Server do
   use GenServer
 
   @name MyServer

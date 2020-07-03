@@ -1,4 +1,4 @@
-defmodule Server do
+defmodule ChatServer do
   @name MyServer
 
   def send_message(message) do
