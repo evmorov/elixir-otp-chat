@@ -11,7 +11,13 @@ defmodule ChatServer.Server do
     {:ok, %{}}
   end
 
-  def handle_call({:send_message, message}, _from, state) do
-    {:reply, "Received #{message}", state}
+  def handle_call({:client_connected, caller}, _from, state) do
+    IO.puts("Client connected: #{caller}")
+    {:noreply, state}
+  end
+
+  def handle_call({:send_message, caller, msg}, _from, state) do
+    IO.puts("#{caller}: #{msg}")
+    {:reply, "You: #{msg}", state}
   end
 end

@@ -13,6 +13,7 @@ defmodule ChatClient.MixProject do
 
   def application do
     [
+      mod: {ChatClient.Application, []},
       extra_applications: [:logger]
     ]
   end
