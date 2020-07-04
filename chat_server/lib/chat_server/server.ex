@@ -24,6 +24,7 @@ defmodule ChatServer.Server do
 
   def handle_cast({:new_message, caller, msg}, state) do
     log_new_message(caller, extract_nickname(state, caller), msg)
+    GenServer.cast(@name, {:broadcast, caller, msg})
 
     {:noreply, state}
   end
