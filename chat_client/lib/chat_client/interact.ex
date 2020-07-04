@@ -1,10 +1,10 @@
 defmodule ChatClient.Interact do
-  def prompt do
+  def message_prompt do
     IO.gets("")
     |> check_input()
     |> ChatClient.send_message()
 
-    prompt()
+    message_prompt()
   end
 
   defp check_input({:error, reason}) do
