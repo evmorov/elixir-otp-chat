@@ -15,7 +15,7 @@ defmodule ChatServer.Server do
   def handle_cast({:client_connected, caller, nickname}, state) do
     log_client_connected(caller, nickname)
 
-    inform_clients_about_new_user(caller, nickname)
+    inform_clients_about_newcomer(caller, nickname)
 
     state =
       Map.update!(state, :connected, fn connected ->
@@ -39,7 +39,7 @@ defmodule ChatServer.Server do
     {:noreply, state}
   end
 
-  defp inform_clients_about_new_user(caller, nickname) do
+  defp inform_clients_about_newcomer(caller, nickname) do
     Node.list()
     |> Enum.filter(&(&1 != caller))
     |> Enum.each(&broadcast(&1, @system_name, "#{nickname} entered the chat"))
