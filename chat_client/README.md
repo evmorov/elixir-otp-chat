@@ -7,11 +7,11 @@ iex --sname client1 -S mix
 Remote server:
 
 ```
-iex --name client1@91.227.46.73 --cookie iamafriend -S mix
+iex --name client1@$your_ip --cookie iamafriend -S mix
 ```
 
 Then:
 
 ```
-ChatClient.send_message("Hello!")
+ChatClient.start(chat_server: $server_node)
 ```
