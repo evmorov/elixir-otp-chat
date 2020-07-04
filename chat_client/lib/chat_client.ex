@@ -9,7 +9,7 @@ defmodule ChatClient do
   end
 
   def send_message(msg) do
-    :rpc.call(@chat_server, ChatServer, :send_message, [node(), msg])
+    :rpc.call(@chat_server, ChatServer, :new_message, [node(), msg])
   end
 
   def receive_message(client, msg) do
