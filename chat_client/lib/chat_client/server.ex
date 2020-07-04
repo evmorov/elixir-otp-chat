@@ -4,16 +4,15 @@ defmodule ChatClient.Server do
   @name MyChat
 
   def start_link do
-    connected = ChatClient.start()
-    GenServer.start_link(__MODULE__, %{connected: connected}, name: @name)
+    GenServer.start_link(__MODULE__, nil, name: @name)
   end
 
   def init(_) do
     {:ok, %{}}
   end
 
-  def handle_cast({:receive_message, client, msg}, state) do
-    IO.puts("#{client}: #{msg}")
+  def handle_cast({:receive_message, date_time_utc, client, msg}, state) do
+    IO.puts("#{DateTime.truncate(date_time_utc, :second)}, #{client}: #{msg}")
     {:noreply, state}
   end
 end

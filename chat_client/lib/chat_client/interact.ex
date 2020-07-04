@@ -1,6 +1,6 @@
 defmodule ChatClient.Interact do
   def prompt do
-    IO.gets("You: ")
+    IO.gets("")
     |> check_input()
     |> ChatClient.send_message()
 
