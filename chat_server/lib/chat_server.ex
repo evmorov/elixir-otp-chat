@@ -3,10 +3,10 @@ defmodule ChatServer do
 
   def new_message(caller, msg) do
     GenServer.cast(@name, {:new_message, caller, msg})
-    GenServer.cast(@name, {:send_messages_to_clients, caller, msg})
+    GenServer.cast(@name, {:broadcast, caller, msg})
   end
 
-  def client_connected(caller) do
-    GenServer.cast(@name, {:client_connected, caller})
+  def client_connected(caller, nickname) do
+    GenServer.cast(@name, {:client_connected, caller, nickname})
   end
 end

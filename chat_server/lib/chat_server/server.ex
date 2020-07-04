@@ -4,41 +4,51 @@ defmodule ChatServer.Server do
   @name MyServer
 
   def start_link do
-    GenServer.start_link(__MODULE__, nil, name: @name)
+    GenServer.start_link(__MODULE__, %{connected: %{}}, name: @name)
   end
 
-  def init(_) do
-    {:ok, %{}}
+  def init(state) do
+    {:ok, state}
   end
 
-  def handle_cast({:client_connected, caller}, state) do
-    log_client_connected(caller)
+  def handle_cast({:client_connected, caller, nickname}, state) do
+    log_client_connected(caller, nickname)
+
+    state =
+      Map.update!(state, :connected, fn connected ->
+        Map.put(connected, caller, nickname)
+      end)
 
     {:noreply, state}
   end
 
   def handle_cast({:new_message, caller, msg}, state) do
-    log_new_message(caller, msg)
+    log_new_message(caller, extract_nickname(state, caller), msg)
 
     {:noreply, state}
   end
 
-  def handle_cast({:send_messages_to_clients, caller, msg}, state) do
-    Node.list() |> Enum.each(&send_message_to_client(&1, caller, msg))
+  def handle_cast({:broadcast, caller, msg}, state) do
+    Node.list()
+    |> Enum.each(&broadcast(&1, extract_nickname(state, caller), msg))
 
     {:noreply, state}
   end
 
-  defp send_message_to_client(client, caller, msg) do
-    :rpc.call(client, ChatClient, :receive_message, [DateTime.utc_now(), caller, msg])
+  defp broadcast(client, nickname, msg) do
+    :rpc.call(client, ChatClient, :receive_message, [DateTime.utc_now(), nickname, msg])
   end
 
-  defp log_client_connected(caller) do
-    IO.puts("#{datetime_now()}, client connected: #{caller}")
+  defp extract_nickname(state, client) do
+    Map.get(state.connected, client)
   end
 
-  defp log_new_message(caller, msg) do
-    IO.puts("#{datetime_now()}, #{caller}: #{msg}")
+  defp log_client_connected(caller, nickname) do
+    IO.puts("#{datetime_now()}, client connected: #{caller}, #{nickname}")
+  end
+
+  defp log_new_message(caller, nickname, msg) do
+    IO.puts("#{datetime_now()}, #{caller}, #{nickname}: #{msg}")
   end
 
   defp datetime_now do

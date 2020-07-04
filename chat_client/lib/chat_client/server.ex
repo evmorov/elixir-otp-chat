@@ -11,8 +11,8 @@ defmodule ChatClient.Server do
     {:ok, %{}}
   end
 
-  def handle_cast({:receive_message, date_time_utc, client, msg}, state) do
-    IO.puts("#{DateTime.truncate(date_time_utc, :second)}, #{client}: #{msg}")
+  def handle_cast({:receive_message, date_time_utc, nickname, msg}, state) do
+    IO.puts("#{DateTime.truncate(date_time_utc, :second)}, #{nickname}: #{msg}")
     {:noreply, state}
   end
 end
