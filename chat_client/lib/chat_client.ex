@@ -1,5 +1,6 @@
 defmodule ChatClient do
   @chat_server :"chat_server@Evgenijs-MacBook-Pro"
+  # @chat_server :"chat_server@161.35.157.135"
   @name MyChat
 
   def start do
@@ -8,12 +9,16 @@ defmodule ChatClient do
     connected
   end
 
+  def start_chat do
+    ChatClient.Interact.prompt()
+  end
+
   def send_message(msg) do
     :rpc.call(@chat_server, ChatServer, :new_message, [node(), msg])
   end
 
   def receive_message(client, msg) do
-    GenServer.call(@name, {:receive_message, client, msg})
+    GenServer.cast(@name, {:receive_message, client, msg})
   end
 
   defp inform_client_connected(false), do: false

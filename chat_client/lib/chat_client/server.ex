@@ -12,7 +12,7 @@ defmodule ChatClient.Server do
     {:ok, %{}}
   end
 
-  def handle_call({:receive_message, client, msg}, _from, state) do
+  def handle_cast({:receive_message, client, msg}, state) do
     IO.puts("#{client}: #{msg}")
     {:noreply, state}
   end

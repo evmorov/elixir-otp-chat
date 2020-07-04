@@ -17,10 +17,11 @@ defmodule ChatServer.Server do
     {:noreply, state}
   end
 
-  def handle_call({:new_message, caller, msg}, _from, state) do
+  def handle_cast({:new_message, caller, msg}, state) do
     IO.puts("#{caller}: #{msg}")
 
-    {:reply, "You: #{msg}", state}
+    {:noreply, state}
+    # {:reply, "You: #{msg}", state}
   end
 
   def handle_cast({:send_messages_to_clients, caller, msg}, state) do
