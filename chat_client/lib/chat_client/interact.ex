@@ -7,6 +7,14 @@ defmodule ChatClient.Interact do
     message_prompt()
   end
 
+  def ask_nickname do
+    nickname =
+      IO.gets("Enter your nickname: ")
+      |> check_input()
+
+    if nickname == "", do: ask_nickname(), else: nickname
+  end
+
   defp check_input({:error, reason}) do
     IO.puts("Chat ended: #{reason}")
     exit(:normal)
