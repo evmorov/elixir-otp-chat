@@ -2,6 +2,7 @@ defmodule ChatServer.Server do
   use GenServer
 
   @name MyServer
+  @system_name "System"
 
   def start_link do
     GenServer.start_link(__MODULE__, %{connected: %{}}, name: @name)
@@ -13,6 +14,8 @@ defmodule ChatServer.Server do
 
   def handle_cast({:client_connected, caller, nickname}, state) do
     log_client_connected(caller, nickname)
+
+    inform_clients_about_new_user(caller, nickname)
 
     state =
       Map.update!(state, :connected, fn connected ->
@@ -34,6 +37,12 @@ defmodule ChatServer.Server do
     |> Enum.each(&broadcast(&1, extract_nickname(state, caller), msg))
 
     {:noreply, state}
+  end
+
+  defp inform_clients_about_new_user(caller, nickname) do
+    Node.list()
+    |> Enum.filter(&(&1 != caller))
+    |> Enum.each(&broadcast(&1, @system_name, "#{nickname} entered the chat"))
   end
 
   defp broadcast(client, nickname, msg) do
